@@ -1,13 +1,21 @@
 from rest_framework import viewsets
 from django.contrib.auth.models import User, Group
 from rest_framework import permissions
-from .serializers import HeroSerializer, UserSerializer, GroupSerializer
-from .models import Hero
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.viewsets import ViewSet
+from .serializers import HeroSerializer, UserSerializer, GroupSerializer, EventSerializer
+from .models import Hero, Event
 
 
 class HeroViewSet(viewsets.ModelViewSet):
     queryset = Hero.objects.all().order_by('name')
     serializer_class = HeroSerializer
+
+
+class EventViewSet(viewsets.ModelViewSet):
+    queryset = Event.objects.all().order_by('event_type')
+    serializer_class = EventSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -26,3 +34,16 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+class CountWords(ViewSet):
+    def list(self, request, format=None):
+        events = Event.objects.all()
+        res = {}
+        for event in events:
+            if event.data in res:
+                res[event.data] += 1
+            else:
+                res.update({event.data: 1})
+
+        return Response(res)

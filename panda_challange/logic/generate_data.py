@@ -33,12 +33,12 @@ class DataGenerator():
             if out != '':
                 json = self.parse_json(out)
                 if json:
-                    print(json)
-                    # requests.post(self.dst_url, data=json)
+                    # print(json)
+                    requests.post(self.dst_url, data=json)
 
     def stop(self):
         self.running = False
 
 
-x = DataGenerator("")
+x = DataGenerator("http://localhost:8000/events/")
 x.start_generating()

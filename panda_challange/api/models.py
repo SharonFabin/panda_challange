@@ -10,10 +10,11 @@ class Hero(models.Model):
 
 
 class Event(models.Model):
-    name = models.CharField(max_length=60)
-    count = models.IntegerField()
+    event_type = models.CharField(max_length=60)
+    data = models.CharField(max_length=60)
+    timestamp = models.CharField(max_length=60)
 
 
-class Data(models.Model):
-    name = models.CharField(max_length=60)
+class EventCount(models.Model):
+    event_type = models.CharField(max_length=60)
     count = models.IntegerField()
